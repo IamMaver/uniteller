@@ -28,25 +28,22 @@ namespace uniteller {
 
     string IdentificatorMaker::get() const {
         string result;
-        string char_array[] = {"A", "B", "C", "E", "H", "I", "K", "L", "N", "O", "P", "R", "S", "T", "U", "W", "X", "Y",
-                               "Z"};
-        constexpr size_t CHAR_ARRAY_LEN = size(char_array);
-        string number_array[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        constexpr size_t NUMBER_ARRAY_LEN = size(number_array);
-        constexpr size_t SIZE_OF_GROUP = CHAR_ARRAY_LEN * NUMBER_ARRAY_LEN;
+        string char_array = "ABCEHIKLNOPRSTUWXYZ";
+        string number_array = "123456789";
+        size_t size_of_group = char_array.size() * number_array.size();
         constexpr size_t MAX_GROUP_COUNT = 10;
         unsigned long long remaining = _number+1;
         unsigned long long groups[MAX_GROUP_COUNT] = {};
         size_t group_count = 0;
 
         do {
-            groups[group_count++] = (remaining-1) % SIZE_OF_GROUP;
-            remaining = (remaining-1)/ SIZE_OF_GROUP;
+            groups[group_count++] = (remaining-1) % size_of_group;
+            remaining = (remaining-1) / size_of_group;
         } while (remaining > 0);
 
         for (size_t i = group_count - 1;; i--) {
-            result += char_array[groups[i] / NUMBER_ARRAY_LEN];
-            result += number_array[groups[i] % NUMBER_ARRAY_LEN];
+            result += char_array[groups[i] / number_array.size()];
+            result += number_array[groups[i] % number_array.size()];
             if (i == 0) { break; }
             result += "-";
         }
